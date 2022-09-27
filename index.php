@@ -14,7 +14,6 @@ header("Content-type: application/json; charset=UTF-8");
 
 $parts = explode("/", $_SERVER['REQUEST_URI']);
 
-
 if ($parts[1] != "beczkowa-liga-api") {
     http_response_code(404);
     exit;
@@ -22,7 +21,7 @@ if ($parts[1] != "beczkowa-liga-api") {
 
 $id = $parts[2] ?? null;
 
-$database = new Database("localhost", "beczkowa_liga_darta", "root", "2w3e4r5tK$");
+$database = new Database("localhost", "beczkowa_liga_darta", "root", "password");
 
 $gateway = new BarrelGateway($database);
 

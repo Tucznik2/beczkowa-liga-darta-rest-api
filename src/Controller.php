@@ -9,14 +9,21 @@ class Controller
     public function processRequest(string $method, ?string $id): void
     {
         if ($id) {
+            var_dump($id);
             $this->processResourceRequest($method, $id);
         } else {
             $this->processCollectionRequest($method);
         }
     }
-
     private function processResourceRequest(string $method, string $id): void
     {
+        $player = $this->gateway->get($id);
+
+        if (!$player) {
+            http_response_code(404);
+            echo json_encode(['message' => "PLayer not found"]);
+            return;
+        }
     }
     private function processCollectionRequest(string $method): void
     {
@@ -48,13 +55,16 @@ class Controller
                     "id" => $id
                 ]);
                 break;
+            default:
+                http_response_code(405);
+                header("Allow: GET, POST");
         }
     }
 
-    private function getValidationErrors(array $data): array
+    private function getValidationErrors(array $data, bool $is_new = true): array
     {
         $errors = [];
-        if (empty($data['player_one_id']) || empty($data['player_two_id'])) {
+        if ($is_new && empty($data['player_one_id']) || empty($data['player_two_id'])) {
             $errors[] = "Players name are required";
         }
 

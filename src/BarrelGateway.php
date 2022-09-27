@@ -35,4 +35,18 @@ class BarrelGateway
 
         return $this->conn->lastInsertId();
     }
+
+    public function get(string $id): array
+    {
+        $sql = "SELECT * FROM first_league WHERE player_id = :id";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindValue(":id", $id, PDO::PARAM_INT);
+        $stmt->execute();
+        $data = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $data;
+    }
+
+    public function update($data)
+    {
+    }
 }
